@@ -21,14 +21,23 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           const SizedBox(height: 80),
           const Logo(),
+          //TODO: Passar essa função para o menu lateral, ela troca a cor da aplicação.
+          // FilledButton(
+          //   onPressed: () {
+          //     Modular.get<AppTheme>().setTheme(
+          //       Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light ? ApplicationTheme.dark : ApplicationTheme.light,
+          //     );
+          //   },
+          //   child: const Text('Toggle'),
+          // ),
           const SizedBox(height: 80),
           Card(
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.35,
               width: MediaQuery.of(context).size.width * 0.8,
               padding: const EdgeInsets.all(20),
               child: Form(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
@@ -42,12 +51,31 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: 'Senha',
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
+                        //TODO: Implementar
+                      },
+                      child: const Text('Esqueci minha senha'),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Text('Permanecer conectado'),
+                        Switch(
+                          value: true,
+                          onChanged: (bool ligado) {
+                            //TODO: Fazer
+                          },
+                        ),
+                      ],
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            //TODO: Implementar
+                          },
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -57,7 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         FilledButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            //TODO: Implementar
+                          },
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
