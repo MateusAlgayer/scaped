@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../components/logo.dart';
+import '../themes/app_theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,14 +25,14 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 80),
           const Logo(),
           //TODO: Passar essa função para o menu lateral, ela troca a cor da aplicação.
-          // FilledButton(
-          //   onPressed: () {
-          //     Modular.get<AppTheme>().setTheme(
-          //       Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light ? ApplicationTheme.dark : ApplicationTheme.light,
-          //     );
-          //   },
-          //   child: const Text('Toggle'),
-          // ),
+          FilledButton(
+            onPressed: () {
+              Modular.get<AppTheme>().setTheme(
+                Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light ? ApplicationTheme.dark : ApplicationTheme.light,
+              );
+            },
+            child: const Text('Toggle'),
+          ),
           const SizedBox(height: 80),
           Card(
             child: Container(
@@ -41,8 +44,9 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                        labelText: 'Usuário',
+                        labelText: 'E-mail',
                       ),
+                      validator: (value) => (value?.isEmpty ?? false) ? 'Não deve ser vazio' : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -85,8 +89,12 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         FilledButton(
-                          onPressed: () {
-                            //TODO: Implementar
+                          onPressed: () async {
+                            Supabase sup = await Modular.getAsync<Supabase>();
+                            await sup.client.auth.signInWithOtp(
+                              email: 'matealgayer@gmail.com',
+                              emailRedirectTo: 'com.ifsul.scaped://login-callback',
+                            );
                           },
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,

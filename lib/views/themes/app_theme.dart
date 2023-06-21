@@ -5,7 +5,7 @@ import 'theme_color.dart';
 enum ApplicationTheme { dark, light }
 
 class AppTheme {
-  ValueNotifier<ApplicationTheme> themeNotifier = ValueNotifier<ApplicationTheme>(ApplicationTheme.light);
+  final ValueNotifier<ApplicationTheme> _themeNotifier = ValueNotifier<ApplicationTheme>(ApplicationTheme.light);
   ThemeData _theme = _getThemeData(colorScheme: ThemeColor.lightColorScheme);
   AppTheme();
 
@@ -43,4 +43,5 @@ class AppTheme {
   }
 
   ThemeData get theme => _theme;
+  ValueNotifier<ApplicationTheme> get themeNotifier => _themeNotifier;
 }

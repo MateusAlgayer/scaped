@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/views/home/home_page.dart';
 import 'package:scaped/views/splash/splash_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'views/themes/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  dotenv.load(fileName: '.env.dev');
 
   runApp(ModularApp(module: MainModule(), child: const MainApp()));
 }
@@ -17,12 +21,19 @@ class MainModule extends Module {
   // TODO: implement routes
   List<ModularRoute> get routes => [
         ChildRoute('/splash', child: (context, args) => const SplashPage()),
+        ChildRoute('/login-callback', child: (context, args) => const HomePage())
       ];
 
   @override
   // TODO: implement binds
   List<Bind<Object>> get binds => [
         Bind.singleton<AppTheme>((i) => AppTheme()),
+        AsyncBind<Supabase>(
+          (i) => Supabase.initialize(
+            url: dotenv.env['SUPABASE_URL']!,
+            anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+          ),
+        ),
       ];
 }
 
