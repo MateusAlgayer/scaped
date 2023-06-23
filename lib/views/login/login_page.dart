@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../components/logo.dart';
-import '../themes/app_theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +14,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final StreamSubscription<AuthState> _supabaseAuthListener;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (mounted) {
+      Modular.getAsync<Supabase>().then((i) {
+        _supabaseAuthListener = i.client.auth.onAuthStateChange.listen((event) {
+          if (event.session != null && mounted) {
+            Modular.to.navigate('/home');
+          }
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _supabaseAuthListener.cancel();
+    _emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,25 +51,18 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           const SizedBox(height: 80),
           const Logo(),
-          //TODO: Passar essa função para o menu lateral, ela troca a cor da aplicação.
-          FilledButton(
-            onPressed: () {
-              Modular.get<AppTheme>().setTheme(
-                Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light ? ApplicationTheme.dark : ApplicationTheme.light,
-              );
-            },
-            child: const Text('Toggle'),
-          ),
           const SizedBox(height: 80),
           Card(
             child: Container(
               width: MediaQuery.of(context).size.width * 0.8,
               padding: const EdgeInsets.all(20),
               child: Form(
+                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     TextFormField(
+                      controller: _emailController,
                       decoration: const InputDecoration(
                         labelText: 'E-mail',
                       ),
@@ -62,18 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text('Esqueci minha senha'),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Text('Permanecer conectado'),
-                        Switch(
-                          value: true,
-                          onChanged: (bool ligado) {
-                            //TODO: Fazer
-                          },
-                        ),
-                      ],
-                    ),
-                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         OutlinedButton(
@@ -90,9 +98,13 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         FilledButton(
                           onPressed: () async {
+                            if (!_formKey.currentState!.validate()) {
+                              return;
+                            }
+
                             Supabase sup = await Modular.getAsync<Supabase>();
                             await sup.client.auth.signInWithOtp(
-                              email: 'matealgayer@gmail.com',
+                              email: _emailController.text,
                               emailRedirectTo: 'com.ifsul.scaped://login-callback',
                             );
                           },

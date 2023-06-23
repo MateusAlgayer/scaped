@@ -3,12 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:scaped/views/home/home_page.dart';
+import 'package:scaped/views/login/login_page.dart';
 import 'package:scaped/views/splash/splash_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'views/themes/app_theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   dotenv.load(fileName: '.env.dev');
@@ -18,14 +19,23 @@ void main() {
 
 class MainModule extends Module {
   @override
-  // TODO: implement routes
   List<ModularRoute> get routes => [
         ChildRoute('/splash', child: (context, args) => const SplashPage()),
-        ChildRoute('/login-callback', child: (context, args) => const HomePage())
+        ChildRoute(
+          '/login',
+          child: (context, args) => const LoginPage(),
+          duration: const Duration(seconds: 2),
+          transition: TransitionType.scale,
+        ),
+        ChildRoute(
+          '/home',
+          child: (context, args) => const HomePage(),
+          duration: const Duration(seconds: 2),
+          transition: TransitionType.scale,
+        )
       ];
 
   @override
-  // TODO: implement binds
   List<Bind<Object>> get binds => [
         Bind.singleton<AppTheme>((i) => AppTheme()),
         AsyncBind<Supabase>(
@@ -65,6 +75,7 @@ class _MainAppState extends State<MainApp> {
         theme: appTheme.theme,
         routeInformationParser: Modular.routeInformationParser,
         routerDelegate: Modular.routerDelegate,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

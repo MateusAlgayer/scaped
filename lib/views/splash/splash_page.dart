@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../components/logo.dart';
-import '../login/login_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -16,12 +17,17 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     if (mounted) {
-      Future.delayed(
-        const Duration(seconds: 2),
-        () => Navigator.of(context).push(
-          PageRouteBuilder(
-            transitionDuration: const Duration(seconds: 1, milliseconds: 500),
-            pageBuilder: (context, animation, secondaryAnimation) => const LoginPage(),
+      Modular.isModuleReady().whenComplete(
+        () => Future.delayed(
+          const Duration(milliseconds: 500),
+          () => Modular.getAsync<Supabase>().then(
+            (i) {
+              if (i.client.auth.currentSession != null) {
+                Modular.to.navigate('/home');
+              } else {
+                Modular.to.navigate('/login');
+              }
+            },
           ),
         ),
       );
