@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:scaped/views/home/home_page.dart';
-import 'package:scaped/views/login/login_page.dart';
-import 'package:scaped/views/splash/splash_page.dart';
+import 'package:scaped/presenters/home/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'views/themes/app_theme.dart';
+import 'presenters/pages/login/login_page.dart';
+import 'presenters/pages/splash/splash_page.dart';
+import 'presenters/themes/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +37,7 @@ class MainModule extends Module {
 
   @override
   List<Bind<Object>> get binds => [
-        Bind.singleton<AppTheme>((i) => AppTheme()),
+        Bind.singleton<AppTheme>((i) => AppTheme.instance),
         AsyncBind<Supabase>(
           (i) => Supabase.initialize(
             url: dotenv.env['SUPABASE_URL']!,
