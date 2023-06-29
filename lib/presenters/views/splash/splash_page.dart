@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/config/router/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../components/logo.dart';
+import '../../widgets/logo.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -24,9 +25,9 @@ class _SplashPageState extends State<SplashPage> {
             (i) {
               i.client.auth.refreshSession();
               if (i.client.auth.currentSession != null) {
-                Modular.to.navigate('/home');
+                Modular.to.navigate(appRouter.homeRoute);
               } else {
-                Modular.to.navigate('/login');
+                Modular.to.navigate(appRouter.loginRoute);
               }
             },
           ),

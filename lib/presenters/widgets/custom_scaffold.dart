@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../themes/app_theme.dart';
+import '../../config/themes/app_theme.dart';
 import 'logo.dart';
 
 class CustomScaffold extends StatefulWidget {
