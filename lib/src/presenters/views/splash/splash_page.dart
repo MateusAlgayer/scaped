@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:scaped/config/router/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../config/router/app_router.dart';
 import '../../widgets/logo.dart';
 
 class SplashPage extends StatefulWidget {
@@ -23,7 +23,6 @@ class _SplashPageState extends State<SplashPage> {
           const Duration(milliseconds: 500),
           () => Modular.getAsync<Supabase>().then(
             (i) {
-              i.client.auth.refreshSession();
               if (i.client.auth.currentSession != null) {
                 Modular.to.navigate(appRouter.homeRoute);
               } else {

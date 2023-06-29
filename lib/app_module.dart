@@ -2,8 +2,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'config/router/app_router.dart';
-import 'config/themes/app_theme.dart';
+import 'src/config/router/app_router.dart';
+import 'src/config/themes/app_theme.dart';
 
 class AppModule extends Module {
   @override

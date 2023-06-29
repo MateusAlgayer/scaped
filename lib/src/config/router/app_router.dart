@@ -26,7 +26,6 @@ class AppRouter {
         ChildRoute(
           homeRoute,
           child: (context, args) => const HomePage(),
-          duration: const Duration(seconds: 2),
           transition: TransitionType.fadeIn,
         ),
       ];

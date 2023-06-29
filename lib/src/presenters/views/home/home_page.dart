@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scaped/presenters/widgets/custom_scaffold.dart';
+
+import '../../widgets/custom_scaffold.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
