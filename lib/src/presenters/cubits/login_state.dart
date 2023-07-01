@@ -3,10 +3,14 @@ sealed class LoginState {
   const LoginState({this.email = ''});
 }
 
-class MagicLinkSendState extends LoginState {
-  const MagicLinkSendState({super.email});
+class FormLoginState extends LoginState {
+  const FormLoginState();
 }
 
-class WaitingState extends LoginState {
-  const WaitingState();
+class WaitingLoginState extends LoginState {
+  const WaitingLoginState({super.email = ''});
+}
+
+class AuthenticatedLoginState extends LoginState {
+  const AuthenticatedLoginState();
 }

@@ -16,4 +16,8 @@ class AppAuth {
   bool isAuthenticated() {
     return Supabase.instance.client.auth.currentSession != null;
   }
+
+  void signOut() {
+    Supabase.instance.client.auth.signOut();
+  }
 }

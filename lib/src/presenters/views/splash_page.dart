@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../config/router/app_router.dart';
+import '../../config/themes/theme_decoration.dart';
 import '../../domain/repositories/i_auth.dart';
 import '../widgets/logo.dart';
 
@@ -20,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
     if (mounted) {
       Modular.isModuleReady().whenComplete(
         () => Future.delayed(const Duration(milliseconds: 500), () {
-          if (Modular.get<IAuth>().isAuthenticaded()) {
+          if (false && Modular.get<IAuth>().isAuthenticaded()) {
             Modular.to.navigate(appRouter.homeRoute);
           } else {
             Modular.to.navigate(appRouter.loginRoute);
@@ -33,9 +34,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(image: AssetImage('lib/assets/background.png'), fit: BoxFit.fill),
-      ),
+      decoration: ThemeDecoration.boxBackground,
       child: const Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

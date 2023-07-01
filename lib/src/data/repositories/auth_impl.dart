@@ -14,4 +14,9 @@ class AuthImpl implements IAuth {
   bool isAuthenticaded() {
     return _appAuth.isAuthenticated();
   }
+
+  @override
+  void signOut() {
+    return _appAuth.signOut();
+  }
 }
