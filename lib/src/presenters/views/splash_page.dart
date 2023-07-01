@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../config/router/app_router.dart';
-import '../../widgets/logo.dart';
+import '../../config/router/app_router.dart';
+import '../../domain/repositories/i_auth.dart';
+import '../widgets/logo.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -19,18 +19,13 @@ class _SplashPageState extends State<SplashPage> {
 
     if (mounted) {
       Modular.isModuleReady().whenComplete(
-        () => Future.delayed(
-          const Duration(milliseconds: 500),
-          () => Modular.getAsync<Supabase>().then(
-            (i) {
-              if (i.client.auth.currentSession != null) {
-                Modular.to.navigate(appRouter.homeRoute);
-              } else {
-                Modular.to.navigate(appRouter.loginRoute);
-              }
-            },
-          ),
-        ),
+        () => Future.delayed(const Duration(milliseconds: 500), () {
+          if (Modular.get<IAuth>().isAuthenticaded()) {
+            Modular.to.navigate(appRouter.homeRoute);
+          } else {
+            Modular.to.navigate(appRouter.loginRoute);
+          }
+        }),
       );
     }
   }

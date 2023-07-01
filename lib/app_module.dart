@@ -1,6 +1,10 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:scaped/src/data/datasource/remote/app_database.dart';
+import 'package:scaped/src/data/datasource/remote/auth/app_auth.dart';
+import 'package:scaped/src/data/repositories/auth_impl.dart';
+import 'package:scaped/src/data/repositories/post_dao_impl.dart';
+import 'package:scaped/src/domain/repositories/i_auth.dart';
+import 'package:scaped/src/domain/repositories/i_post_dao.dart';
 
 import 'src/config/router/app_router.dart';
 import 'src/config/themes/app_theme.dart';
@@ -12,11 +16,9 @@ class AppModule extends Module {
   @override
   List<Bind<Object>> get binds => [
         Bind.singleton<AppTheme>((i) => AppTheme.instance),
-        AsyncBind<Supabase>(
-          (i) => Supabase.initialize(
-            url: dotenv.env['SUPABASE_URL']!,
-            anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-          ),
-        ),
+        Bind.factory<AppDatabase>((i) => AppDatabase()),
+        Bind.singleton<IPostDAO>((i) => PostDAOImpl(i())),
+        Bind.factory<AppAuth>((i) => AppAuth()),
+        Bind.singleton<IAuth>((i) => AuthImpl(i())),
       ];
 }

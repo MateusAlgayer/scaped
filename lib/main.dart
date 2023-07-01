@@ -9,7 +9,7 @@ import 'app_widget.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  dotenv.load(fileName: '.env.dev');
+  await dotenv.load(fileName: '.env.dev');
 
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
