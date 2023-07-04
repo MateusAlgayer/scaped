@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scaped/src/presenters/widgets/post_card.dart';
 
 import '../widgets/custom_scaffold.dart';
 
@@ -12,6 +13,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const CustomScaffold(body: Center());
+    return CustomScaffold(
+        body: ListView.builder(
+      itemBuilder: (context, index) => const PostCard(),
+    ));
   }
 }

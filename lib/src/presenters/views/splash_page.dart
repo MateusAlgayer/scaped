@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
     if (mounted) {
       Modular.isModuleReady().whenComplete(
         () => Future.delayed(const Duration(milliseconds: 500), () {
-          if (false && Modular.get<IAuth>().isAuthenticaded()) {
+          if (Modular.get<IAuth>().isAuthenticaded()) {
             Modular.to.navigate(appRouter.homeRoute);
           } else {
             Modular.to.navigate(appRouter.loginRoute);

@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
             Card(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(12.0),
                 child: BlocConsumer<LoginCubit, LoginState>(
                   bloc: Modular.get<LoginCubit>(),
                   listener: (context, state) {
@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
                     if (state is WaitingLoginState) {
                       return const WaitingForm();
                     } else {
-                      return const LoginForm();
+                      return LoginForm();
                     }
                   },
                 ),

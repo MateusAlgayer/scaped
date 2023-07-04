@@ -8,15 +8,15 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(const FormLoginState());
 
   void signIn({required String email}) {
-    Modular.get<IAuth>().signIn(email: email);
+    Modular.get<IAuth>()
+      ..signIn(email: email)
+      ..onAuthStateChange(onAuthenticated: () => emit(const AuthenticatedLoginState()));
+
     emit(WaitingLoginState(email: email));
   }
 
   void cancel() {
+    Modular.get<IAuth>().cancelAuthCheck();
     emit(const FormLoginState());
-  }
-
-  bool isAuthenticated() {
-    return Modular.get<IAuth>().isAuthenticaded();
   }
 }

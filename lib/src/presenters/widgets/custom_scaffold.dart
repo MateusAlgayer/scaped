@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/src/domain/repositories/i_auth.dart';
 
+import '../../config/router/app_router.dart';
 import '../../config/themes/app_theme.dart';
 import 'logo.dart';
 
@@ -36,53 +38,47 @@ class _CustomScaffoldState extends State<CustomScaffold> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FilledButton(
-                  onPressed: () {},
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add),
-                      Text('Publicar'),
-                    ],
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: () {},
+                    label: const Text('Publicar'),
+                    icon: const Icon(Icons.add),
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () {},
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.article),
-                      Text('Minhas publicações'),
-                    ],
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {},
+                    label: const Text('Minhas publicações'),
+                    icon: const Icon(Icons.article),
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () {
-                    Modular.get<AppTheme>().setTheme(
-                      Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light
-                          ? ApplicationTheme.dark
-                          : ApplicationTheme.light,
-                    );
-                    setState(() {});
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light
-                          ? Icons.brightness_high
-                          : Icons.brightness_2),
-                      const Text('Alterar tema'),
-                    ],
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Modular.get<AppTheme>().setTheme(
+                        Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light
+                            ? ApplicationTheme.dark
+                            : ApplicationTheme.light,
+                      );
+                      setState(() {});
+                    },
+                    icon: Icon(
+                        Modular.get<AppTheme>().themeNotifier.value == ApplicationTheme.light ? Icons.brightness_high : Icons.brightness_2),
+                    label: const Text('Alterar tema'),
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () {},
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.logout),
-                      Text('Sair'),
-                    ],
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    label: const Text('Sair'),
+                    icon: const Icon(Icons.logout),
+                    onPressed: () {
+                      Modular.get<IAuth>().signOut();
+                      Modular.to.navigate(appRouter.loginRoute);
+                    },
                   ),
                 ),
               ],

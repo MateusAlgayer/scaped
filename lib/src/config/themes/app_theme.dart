@@ -42,6 +42,12 @@ class AppTheme {
         margin: const EdgeInsets.all(8.0),
       ),
       colorScheme: colorScheme,
+      filledButtonTheme: const FilledButtonThemeData(
+        style: ButtonStyle(
+          maximumSize: MaterialStatePropertyAll(Size.infinite),
+          minimumSize: MaterialStatePropertyAll(Size(double.infinity, 44)),
+        ),
+      ),
     );
   }
 

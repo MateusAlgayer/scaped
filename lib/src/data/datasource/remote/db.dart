@@ -4,10 +4,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class DB {
   static bool _initialized = false;
 
-  static init() {
+  static init() async {
     if (_initialized) return;
 
-    Supabase.initialize(
+    _initialized = true;
+    await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
     );

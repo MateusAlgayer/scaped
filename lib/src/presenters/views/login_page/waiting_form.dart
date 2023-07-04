@@ -31,17 +31,12 @@ class _WaitingFormState extends State<WaitingForm> {
           padding: EdgeInsets.all(16.0),
           child: Center(child: CircularProgressIndicator()),
         ),
-        OutlinedButton(
+        OutlinedButton.icon(
           onPressed: () {
             context.read<LoginCubit>().cancel();
           },
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.arrow_back_outlined),
-              Text('Voltar'),
-            ],
-          ),
+          icon: const Icon(Icons.arrow_back_outlined),
+          label: const Text('Voltar'),
         ),
       ],
     );
