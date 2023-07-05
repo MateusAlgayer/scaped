@@ -14,8 +14,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-        body: ListView.builder(
-      itemBuilder: (context, index) => const PostCard(),
-    ));
+      body: ListView.builder(
+        itemBuilder: (context, index) => const PostCard(),
+      ),
+    );
   }
 }
