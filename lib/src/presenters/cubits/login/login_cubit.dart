@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:scaped/src/presenters/cubits/login_state.dart';
 
-import '../../domain/repositories/i_auth.dart';
+import '../../../domain/repositories/i_auth.dart';
+import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(const FormLoginState());

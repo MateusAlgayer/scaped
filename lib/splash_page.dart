@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../config/router/app_router.dart';
-import '../../config/themes/theme_decoration.dart';
-import '../../domain/repositories/i_auth.dart';
-import '../widgets/logo.dart';
+import 'src/config/router/app_router.dart';
+import 'src/config/themes/theme_decoration.dart';
+import 'src/domain/repositories/i_auth.dart';
+import 'src/presenters/widgets/logo.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

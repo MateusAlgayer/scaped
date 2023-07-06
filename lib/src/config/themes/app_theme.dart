@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scaped/src/config/themes/theme_size.dart';
 
 import 'theme_color.dart';
 
@@ -38,14 +39,20 @@ class AppTheme {
         border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
       ),
       cardTheme: CardTheme(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        margin: const EdgeInsets.all(8.0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(ThemeSize.defaultBorderRadius)),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       ),
       colorScheme: colorScheme,
       filledButtonTheme: const FilledButtonThemeData(
         style: ButtonStyle(
           maximumSize: MaterialStatePropertyAll(Size.infinite),
-          minimumSize: MaterialStatePropertyAll(Size(double.infinity, 44)),
+          minimumSize: MaterialStatePropertyAll(Size(double.infinity, ThemeSize.defaultButtonHeight)),
+        ),
+      ),
+      outlinedButtonTheme: const OutlinedButtonThemeData(
+        style: ButtonStyle(
+          maximumSize: MaterialStatePropertyAll(Size.infinite),
+          minimumSize: MaterialStatePropertyAll(Size(double.infinity, ThemeSize.defaultButtonHeight)),
         ),
       ),
     );

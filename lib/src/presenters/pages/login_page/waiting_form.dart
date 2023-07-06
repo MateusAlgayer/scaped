@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../cubits/login_cubit.dart';
+import '../../cubits/login/login_cubit.dart';
 
 class WaitingForm extends StatefulWidget {
   const WaitingForm({

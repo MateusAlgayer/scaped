@@ -1,14 +1,15 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:scaped/src/data/datasource/remote/app_database.dart';
-import 'package:scaped/src/data/datasource/remote/auth/app_auth.dart';
-import 'package:scaped/src/data/repositories/auth_impl.dart';
-import 'package:scaped/src/data/repositories/post_dao_impl.dart';
-import 'package:scaped/src/domain/repositories/i_auth.dart';
-import 'package:scaped/src/domain/repositories/i_post_dao.dart';
-import 'package:scaped/src/presenters/cubits/login_cubit.dart';
 
 import 'src/config/router/app_router.dart';
 import 'src/config/themes/app_theme.dart';
+import 'src/data/datasource/remote/app_database.dart';
+import 'src/data/datasource/remote/auth/app_auth.dart';
+import 'src/data/repositories/auth_impl.dart';
+import 'src/data/repositories/post_dao_impl.dart';
+import 'src/domain/repositories/i_auth.dart';
+import 'src/domain/repositories/i_post_dao.dart';
+import 'src/presenters/cubits/home/home_cubit.dart';
+import 'src/presenters/cubits/login/login_cubit.dart';
 
 class AppModule extends Module {
   @override
@@ -23,6 +24,11 @@ class AppModule extends Module {
         Bind.singleton<IAuth>((i) => AuthImpl(i())),
         Bind.singleton<LoginCubit>(
           (i) => LoginCubit(),
+          selector: (value) => value.stream,
+          onDispose: (value) => value.close(),
+        ),
+        Bind.singleton<HomeCubit>(
+          (i) => HomeCubit(),
           selector: (value) => value.stream,
           onDispose: (value) => value.close(),
         )

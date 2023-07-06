@@ -1,8 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../presenters/views/home_page.dart';
-import '../../presenters/views/login_page/login_page.dart';
-import '../../presenters/views/splash_page.dart';
+import '../../../splash_page.dart';
+import '../../presenters/pages/home_page/home_page.dart';
+import '../../presenters/pages/login_page/login_page.dart';
 
 final appRouter = AppRouter._();
 

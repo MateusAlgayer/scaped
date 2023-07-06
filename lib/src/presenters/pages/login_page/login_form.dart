@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:scaped/src/presenters/cubits/login_cubit.dart';
+
+import '../../cubits/login/login_cubit.dart';
 
 class LoginForm extends StatelessWidget {
+  final _emailController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   LoginForm({
     super.key,
   });
-
-  final _emailController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
