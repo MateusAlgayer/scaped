@@ -14,4 +14,14 @@ class Post {
     required this.issue,
     required this.author,
   });
+
+  factory Post.fromMap(Map<String, dynamic> e) {
+    return Post(
+      id: e['id'],
+      createdAt: DateTime.tryParse(e['created_at']) ?? DateTime(1899, 01, 01),
+      title: e['title'],
+      issue: e['issue'],
+      author: User.fromMap(e['profiles']),
+    );
+  }
 }

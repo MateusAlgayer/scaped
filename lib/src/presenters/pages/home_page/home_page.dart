@@ -66,10 +66,17 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-          ErrorHomeState() => Center(
-              child: Text(
-                'Ocorreu um erro ao carregar a lista: ${state.error}',
-                textAlign: TextAlign.center,
+          ErrorHomeState() => RefreshIndicator(
+              onRefresh: () => cubit.refresh(),
+              child: ListView(
+                children: [
+                  Center(
+                    child: Text(
+                      'Ocorreu um erro ao carregar a lista: ${state.error}',
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
               ),
             ),
         },

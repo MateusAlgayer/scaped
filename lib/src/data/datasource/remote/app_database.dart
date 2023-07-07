@@ -1,14 +1,13 @@
-import 'package:scaped/src/data/datasource/remote/dao/post_dao_mock.dart';
-
+import 'dao/post_dao.dart';
 import 'db.dart';
 
 class AppDatabase {
   AppDatabase() {
     DB.init();
   }
-  PostDAOMock? _postDAO;
+  PostDAO? _postDAO;
 
-  PostDAOMock get postDao {
-    return _postDAO ??= PostDAOMock();
+  PostDAO get postDao {
+    return _postDAO ??= PostDAO();
   }
 }

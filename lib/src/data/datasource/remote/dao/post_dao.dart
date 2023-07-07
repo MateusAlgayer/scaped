@@ -1,4 +1,5 @@
 import 'package:scaped/src/data/datasource/remote/dao/interfaces/i_crud.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../domain/models/post.dart';
 
@@ -12,9 +13,11 @@ class PostDAO implements ICRUD<Post> {
   }
 
   @override
-  Future<List<Post>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
+  Future<List<Post>> getAll() async {
+    List<Map<String, dynamic>> res = await Supabase.instance.client.from('posts').select<List<Map<String, dynamic>>>('*, profiles(*)');
+    return res.map((e) {
+      return Post.fromMap(e);
+    }).toList();
   }
 
   @override
