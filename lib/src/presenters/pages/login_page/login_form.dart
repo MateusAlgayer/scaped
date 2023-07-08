@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/src/utils/resources/validators.dart';
 
 import '../../cubits/login/login_cubit.dart';
 
@@ -25,8 +26,7 @@ class LoginForm extends StatelessWidget {
             decoration: const InputDecoration(
               labelText: 'E-mail',
             ),
-            //FIXME: Colocar uma validação de e-mail decente.
-            validator: (value) => (value?.isEmpty ?? false) ? 'Não deve ser vazio' : null,
+            validator: (value) => !Validators.validateEmail(value) ? 'E-mail inválido!' : null,
           ),
           const SizedBox(height: 4),
           FilledButton.icon(

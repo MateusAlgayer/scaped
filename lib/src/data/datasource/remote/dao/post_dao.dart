@@ -15,9 +15,7 @@ class PostDAO implements ICRUD<Post> {
   @override
   Future<List<Post>> getAll() async {
     List<Map<String, dynamic>> res = await Supabase.instance.client.from('posts').select<List<Map<String, dynamic>>>('*, profiles(*)');
-    return res.map((e) {
-      return Post.fromMap(e);
-    }).toList();
+    return res.map((e) => Post.fromMap(e)).toList();
   }
 
   @override
