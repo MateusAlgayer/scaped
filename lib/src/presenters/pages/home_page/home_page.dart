@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/src/config/router/app_router.dart';
 
 import '../../cubits/home/home_cubit.dart';
 import '../../cubits/home/home_state.dart';
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     return ScaffoldBase(
       drawer: [
         FilledButton.icon(
-          onPressed: () {},
+          onPressed: () => Modular.to.pushNamed(appRouter.postPage),
           label: const Text('Publicar'),
           icon: const Icon(Icons.add),
         ),
@@ -61,7 +62,13 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else {
-                    return PostCard(post: state.posts[index]);
+                    return PostCard(
+                      post: state.posts[index],
+                      onTap: () => Modular.to.pushNamed(
+                        appRouter.postDetails,
+                        arguments: state.posts[index],
+                      ),
+                    );
                   }
                 },
               ),
