@@ -11,6 +11,7 @@ import 'src/domain/repositories/i_auth.dart';
 import 'src/domain/repositories/i_post_dao.dart';
 import 'src/presenters/cubits/home/home_cubit.dart';
 import 'src/presenters/cubits/login/login_cubit.dart';
+import 'src/presenters/cubits/my_posts/my_posts_cubit.dart';
 
 class AppModule extends Module {
   @override
@@ -30,6 +31,11 @@ class AppModule extends Module {
         ),
         Bind.singleton<HomeCubit>(
           (i) => HomeCubit(),
+          selector: (value) => value.stream,
+          onDispose: (value) => value.close(),
+        ),
+        Bind.singleton<MyPostsCubit>(
+          (i) => MyPostsCubit(),
           selector: (value) => value.stream,
           onDispose: (value) => value.close(),
         ),

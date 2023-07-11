@@ -13,11 +13,6 @@ class PostDAOImpl implements IPostDAO {
   }
 
   @override
-  Future<List<Post>> getPosts() {
-    return _appDataBase.postDao.getAll();
-  }
-
-  @override
   Future<bool> insertPost(Post post) {
     return _appDataBase.postDao.insert(post);
   }
@@ -25,5 +20,15 @@ class PostDAOImpl implements IPostDAO {
   @override
   Future<bool> updatePost(Post post) {
     return _appDataBase.postDao.update(post);
+  }
+
+  @override
+  Future<List<Post>> getPosts() {
+    return _appDataBase.postDao.getAll();
+  }
+
+  @override
+  Future<List<Post>> getMyPosts() {
+    return _appDataBase.postDao.getMyPosts();
   }
 }

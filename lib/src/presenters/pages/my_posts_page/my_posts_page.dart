@@ -2,54 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:scaped/src/config/router/app_router.dart';
+import 'package:scaped/src/presenters/cubits/my_posts/my_posts_cubit.dart';
+import 'package:scaped/src/presenters/cubits/my_posts/my_posts_state.dart';
 
-import '../../cubits/home/home_cubit.dart';
-import '../../cubits/home/home_state.dart';
 import '../../widgets/post_card.dart';
 import '../../widgets/scaffold_base.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MyPostsPage extends StatefulWidget {
+  const MyPostsPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyPostsPage> createState() => _MyPostsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MyPostsPageState extends State<MyPostsPage> {
   @override
   Widget build(BuildContext context) {
-    HomeCubit cubit = Modular.get<HomeCubit>();
+    MyPostsCubit cubit = Modular.get<MyPostsCubit>();
 
     return ScaffoldBase(
-      drawer: [
-        FilledButton.icon(
-          icon: const Icon(Icons.add),
-          label: const Text('Publicar'),
-          onPressed: () => Modular.to.popAndPushNamed(appRouter.postRoute).then((_) => cubit.refresh()),
-        ),
-        OutlinedButton.icon(
-          icon: const Icon(Icons.article),
-          label: const Text('Minhas publicações'),
-          onPressed: () => Modular.to.popAndPushNamed(appRouter.myPostsRoute).then((_) => cubit.refresh()),
-        ),
-        OutlinedButton.icon(
-          icon: const Icon(Icons.brightness_high),
-          label: const Text('Alterar tema'),
-          onPressed: () => cubit.changeTheme(),
-        ),
-        OutlinedButton.icon(
-          label: const Text('Sair'),
-          icon: const Icon(Icons.logout),
-          onPressed: () => cubit.logOut(),
-        ),
-      ],
-      body: BlocBuilder<HomeCubit, HomeState>(
+      body: BlocBuilder<MyPostsCubit, MyPostsState>(
         bloc: cubit,
         builder: (context, state) => switch (state) {
-          LoadingHomeState() => const Center(
+          LoadingMyPostsState() => const Center(
               child: CircularProgressIndicator(),
             ),
-          LoadedHomeState() => RefreshIndicator(
+          LoadedMyPostsState() => RefreshIndicator(
               onRefresh: () => cubit.refresh(),
               child: ListView.builder(
                 itemCount: state.posts.length + 1,
@@ -73,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-          ErrorHomeState() => RefreshIndicator(
+          ErrorMyPostsState() => RefreshIndicator(
               onRefresh: () => cubit.refresh(),
               child: ListView(
                 children: [

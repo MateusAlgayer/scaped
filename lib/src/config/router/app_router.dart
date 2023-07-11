@@ -5,6 +5,7 @@ import 'package:scaped/src/presenters/pages/post_details_page/post_details_page.
 import '../../../splash_page.dart';
 import '../../presenters/pages/home_page/home_page.dart';
 import '../../presenters/pages/login_page/login_page.dart';
+import '../../presenters/pages/my_posts_page/my_posts_page.dart';
 import '../../presenters/pages/post_page/post_page.dart';
 
 final appRouter = AppRouter._();
@@ -14,8 +15,9 @@ class AppRouter {
 
   final String loginRoute = '/login';
   final String homeRoute = '/home';
-  final String postDetails = '/postDetails';
-  final String postPage = '/postScreen';
+  final String postDetailsRoute = '/postDetails';
+  final String postRoute = '/post';
+  final String myPostsRoute = '/myPosts';
 
   static const TransitionType appDefaultTransition = TransitionType.fadeIn;
   static const Duration appDefaultTransitionDuration = Duration(milliseconds: 800);
@@ -38,12 +40,18 @@ class AppRouter {
           transition: appDefaultTransition,
         ),
         ChildRoute(
-          postDetails,
+          myPostsRoute,
+          child: (context, args) => const MyPostsPage(),
+          duration: appDefaultTransitionDuration,
+          transition: appDefaultTransition,
+        ),
+        ChildRoute(
+          postDetailsRoute,
           child: (context, args) => PostDetailsPage(post: args.data as Post),
           transition: appDefaultTransition,
         ),
         ChildRoute(
-          postPage,
+          postRoute,
           child: (context, args) => const PostPage(),
           transition: appDefaultTransition,
         ),

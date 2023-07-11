@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scaped/src/config/themes/theme_size.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'theme_color.dart';
 
@@ -8,10 +9,17 @@ enum ApplicationTheme { dark, light }
 class AppTheme {
   static AppTheme? _appTheme;
   static AppTheme get instance => _appTheme ??= AppTheme._();
+  static SharedPreferences? _userPrefs;
 
   final ValueNotifier<ApplicationTheme> _themeNotifier = ValueNotifier<ApplicationTheme>(ApplicationTheme.light);
   ThemeData _theme = _getThemeData(colorScheme: ThemeColor.lightColorScheme);
-  AppTheme._();
+  AppTheme._() {
+    SharedPreferences.getInstance().then((value) {
+      _userPrefs = value;
+
+      setTheme(_getThemeFromString());
+    });
+  }
 
   void setTheme(ApplicationTheme theme) {
     ColorScheme colorScheme;
@@ -27,6 +35,7 @@ class AppTheme {
         colorScheme = ThemeColor.lightColorScheme;
     }
 
+    _userPrefs?.setString('userTheme', theme.toString());
     _theme = _getThemeData(colorScheme: colorScheme);
     themeNotifier.value = theme;
   }
@@ -60,4 +69,14 @@ class AppTheme {
 
   ThemeData get theme => _theme;
   ValueNotifier<ApplicationTheme> get themeNotifier => _themeNotifier;
+
+  ApplicationTheme _getThemeFromString() {
+    String? value = _userPrefs?.getString('userTheme');
+
+    return switch (value) {
+      "ApplicationTheme.light" => ApplicationTheme.light,
+      "ApplicationTheme.dark" => ApplicationTheme.dark,
+      _ => ApplicationTheme.light,
+    };
+  }
 }

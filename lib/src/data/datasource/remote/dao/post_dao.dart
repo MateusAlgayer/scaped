@@ -6,6 +6,10 @@ import '../../../../domain/models/post.dart';
 class PostDAO implements ICRUD<Post> {
   PostDAO();
 
+  PostgrestFilterBuilder<List<Map<String, dynamic>>> _baseGetQuery() {
+    return Supabase.instance.client.from('posts').select<List<Map<String, dynamic>>>('*, profiles(*)');
+  }
+
   @override
   Future<bool> delete(Post data) async {
     try {
@@ -18,12 +22,7 @@ class PostDAO implements ICRUD<Post> {
 
   @override
   Future<List<Post>> getAll() async {
-    return (await Supabase.instance.client
-            .from('posts')
-            .select<List<Map<String, dynamic>>>('*, profiles(*)')
-            .order('updated_at, created_at'))
-        .map((e) => Post.fromMap(e))
-        .toList();
+    return (await _baseGetQuery().order('created_at')).map((e) => Post.fromMap(e)).toList();
   }
 
   @override
@@ -53,5 +52,11 @@ class PostDAO implements ICRUD<Post> {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<List<Post>> getMyPosts() async {
+    return (await _baseGetQuery().eq('user_uuid', Supabase.instance.client.auth.currentUser!.id).order('created_at'))
+        .map((e) => Post.fromMap(e))
+        .toList();
   }
 }
