@@ -55,7 +55,7 @@ class PostCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Text(DateFormat('c/M/y H:m').format(post.createdAt)),
+                  Text(DateFormat('c/M/y HH:m').format(post.updatedAt != null ? post.updatedAt! : post.createdAt)),
                 ],
               ),
             ),

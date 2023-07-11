@@ -19,4 +19,8 @@ class User {
       avatar: e['avatar'] ?? '',
     );
   }
+
+  factory User.empty() {
+    return User(uuid: '', name: '', lastName: '', avatar: '');
+  }
 }

@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     return ScaffoldBase(
       drawer: [
         FilledButton.icon(
-          onPressed: () => Modular.to.pushNamed(appRouter.postPage),
+          onPressed: () => Modular.to.popAndPushNamed(appRouter.postPage).then((_) => cubit.refresh()),
           label: const Text('Publicar'),
           icon: const Icon(Icons.add),
         ),

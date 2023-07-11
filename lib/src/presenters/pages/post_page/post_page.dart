@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/src/config/router/app_router.dart';
+import 'package:scaped/src/presenters/cubits/post/post_state.dart';
 import 'package:scaped/src/presenters/widgets/scaffold_base.dart';
 
 import '../../../domain/models/post.dart';
-
-enum ScreenMode { insert, update }
+import '../../cubits/post/post_cubit.dart';
 
 class PostPage extends StatefulWidget {
   final Post? post;
@@ -17,7 +20,7 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  ScreenMode _screenMode = ScreenMode.insert;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titulo = TextEditingController();
   final TextEditingController _publicacao = TextEditingController();
 
@@ -28,7 +31,6 @@ class _PostPageState extends State<PostPage> {
     if (mounted) {
       _titulo.text = widget.post?.title ?? '';
       _publicacao.text = widget.post?.issue ?? '';
-      _screenMode = widget.post == null ? ScreenMode.insert : ScreenMode.update;
     }
   }
 
@@ -41,38 +43,72 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
+    PostCubit postCubit = Modular.get<PostCubit>();
+
     return ScaffoldBase(
-      body: Form(
-        child: Card(
-          margin: const EdgeInsets.all(8.0),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    label: Text('Título'),
+      body: BlocConsumer(
+        listener: (context, state) async {
+          if (state is SuccessPostState) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => AlertDialog(
+                content: const Text('A Publicação foi cadastrada com sucesso!'),
+                actions: [
+                  TextButton(
+                    child: const Text('Ok'),
+                    onPressed: () => Modular.to.popUntil(ModalRoute.withName(appRouter.homeRoute)),
+                  )
+                ],
+              ),
+            );
+          }
+        },
+        bloc: postCubit,
+        builder: (context, state) => Form(
+          key: _formKey,
+          child: Card(
+            margin: const EdgeInsets.all(8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      label: Text('Título'),
+                    ),
+                    controller: _titulo,
+                    validator: (value) => value != null ? (value.isEmpty ? 'Campo não pode ser vazio!' : null) : null,
                   ),
-                  controller: _titulo,
-                ),
-                const SizedBox(height: 4),
-                const Text('Publicação'),
-                Expanded(
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 100,
-                    controller: _publicacao,
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      decoration: const InputDecoration(
+                        label: Text('Publicação'),
+                        alignLabelWithHint: true,
+                      ),
+                      maxLines: 100,
+                      controller: _publicacao,
+                      validator: (value) => value != null ? (value.isEmpty ? 'Campo não pode ser vazio!' : null) : null,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                FilledButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.check),
-                  label: const Text('Publicar'),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  FilledButton.icon(
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+
+                      postCubit.savePost(_titulo.text, _publicacao.text);
+                    },
+                    icon: const Icon(Icons.check),
+                    label: const Text('Publicar'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

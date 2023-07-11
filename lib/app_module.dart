@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/src/presenters/cubits/post/post_cubit.dart';
 
 import 'src/config/router/app_router.dart';
 import 'src/config/themes/app_theme.dart';
@@ -29,6 +30,11 @@ class AppModule extends Module {
         ),
         Bind.singleton<HomeCubit>(
           (i) => HomeCubit(),
+          selector: (value) => value.stream,
+          onDispose: (value) => value.close(),
+        ),
+        Bind.singleton<PostCubit>(
+          (i) => PostCubit(),
           selector: (value) => value.stream,
           onDispose: (value) => value.close(),
         )
