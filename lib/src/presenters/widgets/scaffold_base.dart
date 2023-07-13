@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:scaped/src/config/router/app_router.dart';
 
 import 'logo.dart';
 
@@ -24,7 +26,10 @@ class _ScaffoldBaseState extends State<ScaffoldBase> {
         child: const Logo(),
       ),
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.person)),
+        IconButton(
+          onPressed: () => Modular.to.pushNamed(appRouter.userRoute),
+          icon: const Icon(Icons.person),
+        ),
       ],
     );
   }

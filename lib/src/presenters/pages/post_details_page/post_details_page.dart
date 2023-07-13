@@ -6,17 +6,21 @@ import '../../../domain/models/post.dart';
 
 class PostDetailsPage extends StatelessWidget {
   final Post post;
+  final bool canEdit;
   const PostDetailsPage({
     required this.post,
+    this.canEdit = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldBase(
-      body: PostCard(
-        post: post,
-        needTextWrap: false,
+      body: SingleChildScrollView(
+        child: PostCard(
+          post: post,
+          needTextWrap: false,
+        ),
       ),
     );
   }

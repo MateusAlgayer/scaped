@@ -7,6 +7,7 @@ import 'package:scaped/src/presenters/cubits/my_posts/my_posts_state.dart';
 
 import '../../widgets/post_card.dart';
 import '../../widgets/scaffold_base.dart';
+import '../state/page_state.dart';
 
 class MyPostsPage extends StatefulWidget {
   const MyPostsPage({super.key});
@@ -15,20 +16,27 @@ class MyPostsPage extends StatefulWidget {
   State<MyPostsPage> createState() => _MyPostsPageState();
 }
 
-class _MyPostsPageState extends State<MyPostsPage> {
+class _MyPostsPageState extends PageState<MyPostsPage, MyPostsCubit> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (mounted) {
+      controller.refresh();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    MyPostsCubit cubit = Modular.get<MyPostsCubit>();
-
     return ScaffoldBase(
       body: BlocBuilder<MyPostsCubit, MyPostsState>(
-        bloc: cubit,
+        bloc: controller,
         builder: (context, state) => switch (state) {
           LoadingMyPostsState() => const Center(
               child: CircularProgressIndicator(),
             ),
           LoadedMyPostsState() => RefreshIndicator(
-              onRefresh: () => cubit.refresh(),
+              onRefresh: () => controller.refresh(),
               child: ListView.builder(
                 itemCount: state.posts.length + 1,
                 itemBuilder: (context, index) {
@@ -42,6 +50,29 @@ class _MyPostsPageState extends State<MyPostsPage> {
                   } else {
                     return PostCard(
                       post: state.posts[index],
+                      update: () => Modular.to.pushNamed(appRouter.postRoute, arguments: state.posts[index]),
+                      delete: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => AlertDialog(
+                            content: const Text('Tem certeza que deseja excluir a publicação?'),
+                            actions: [
+                              TextButton(
+                                child: const Text('Sim'),
+                                onPressed: () {
+                                  controller.delete(state.posts[index]);
+                                  Modular.to.pop();
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Não'),
+                                onPressed: () => Modular.to.pop(),
+                              )
+                            ],
+                          ),
+                        );
+                      },
                       onTap: () => Modular.to.pushNamed(
                         appRouter.postDetailsRoute,
                         arguments: state.posts[index],
@@ -52,7 +83,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
               ),
             ),
           ErrorMyPostsState() => RefreshIndicator(
-              onRefresh: () => cubit.refresh(),
+              onRefresh: () => controller.refresh(),
               child: ListView(
                 children: [
                   Center(

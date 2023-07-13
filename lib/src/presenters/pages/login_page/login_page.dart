@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../config/router/app_router.dart';
 import '../../../config/themes/theme_decoration.dart';
 import '../../cubits/login/login_cubit.dart';
 import '../../cubits/login/login_state.dart';
@@ -31,7 +30,7 @@ class LoginPage extends StatelessWidget {
                   bloc: Modular.get<LoginCubit>(),
                   listener: (context, state) {
                     if (state is AuthenticatedLoginState) {
-                      Modular.to.navigate(appRouter.homeRoute);
+                      Modular.get<LoginCubit>().login();
                     }
                   },
                   builder: (context, state) {

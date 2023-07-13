@@ -6,9 +6,7 @@ import '../../../domain/repositories/i_post_dao.dart';
 import 'my_posts_state.dart';
 
 class MyPostsCubit extends Cubit<MyPostsState> {
-  MyPostsCubit() : super(const LoadingMyPostsState()) {
-    _getPosts();
-  }
+  MyPostsCubit() : super(const LoadingMyPostsState());
 
   Future<void> _getPosts() async {
     try {
@@ -21,6 +19,11 @@ class MyPostsCubit extends Cubit<MyPostsState> {
   }
 
   Future<void> refresh() async {
+    _getPosts();
+  }
+
+  Future<void> delete(Post post) async {
+    await Modular.get<IPostDAO>().deletePost(post);
     _getPosts();
   }
 }

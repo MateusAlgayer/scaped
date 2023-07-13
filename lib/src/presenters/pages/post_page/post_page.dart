@@ -7,6 +7,7 @@ import 'package:scaped/src/presenters/widgets/scaffold_base.dart';
 
 import '../../../domain/models/post.dart';
 import '../../cubits/post/post_cubit.dart';
+import '../state/page_state.dart';
 
 class PostPage extends StatefulWidget {
   final Post? post;
@@ -19,7 +20,7 @@ class PostPage extends StatefulWidget {
   State<PostPage> createState() => _PostPageState();
 }
 
-class _PostPageState extends State<PostPage> {
+class _PostPageState extends PageState<PostPage, PostCubit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titulo = TextEditingController();
   final TextEditingController _publicacao = TextEditingController();
@@ -31,6 +32,7 @@ class _PostPageState extends State<PostPage> {
     if (mounted) {
       _titulo.text = widget.post?.title ?? '';
       _publicacao.text = widget.post?.issue ?? '';
+      controller.post = widget.post;
     }
   }
 
@@ -43,17 +45,16 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    PostCubit postCubit = Modular.get<PostCubit>();
-
     return ScaffoldBase(
-      body: BlocConsumer(
+      body: BlocConsumer<PostCubit, PostState>(
+        bloc: controller,
         listener: (context, state) async {
           if (state is SuccessPostState) {
             showDialog(
               context: context,
               barrierDismissible: false,
               builder: (context) => AlertDialog(
-                content: const Text('A Publicação foi cadastrada com sucesso!'),
+                content: const Text('A Publicação foi gravada com sucesso!'),
                 actions: [
                   TextButton(
                     child: const Text('Ok'),
@@ -64,7 +65,6 @@ class _PostPageState extends State<PostPage> {
             );
           }
         },
-        bloc: postCubit,
         builder: (context, state) => Form(
           key: _formKey,
           child: Card(
@@ -102,7 +102,7 @@ class _PostPageState extends State<PostPage> {
                         return;
                       }
 
-                      postCubit.savePost(_titulo.text, _publicacao.text);
+                      controller.savePost(_titulo.text, _publicacao.text);
                     },
                     icon: const Icon(Icons.check),
                     label: const Text('Publicar'),

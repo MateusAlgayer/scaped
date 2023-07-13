@@ -1,7 +1,7 @@
-import 'package:scaped/src/data/datasource/remote/dao/interfaces/i_crud.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../domain/models/post.dart';
+import 'interfaces/i_crud.dart';
 
 class PostDAO implements ICRUD<Post> {
   PostDAO();
@@ -45,7 +45,7 @@ class PostDAO implements ICRUD<Post> {
       await Supabase.instance.client.from('posts').update({
         'title': data.title,
         'issue': data.issue,
-        'updated_at': DateTime.now(),
+        'updated_at': DateTime.now().toIso8601String(),
         'user_uuid': Supabase.instance.client.auth.currentUser!.id,
       }).eq('id', data.id);
       return true;

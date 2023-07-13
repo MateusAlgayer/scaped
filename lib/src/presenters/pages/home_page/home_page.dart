@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:scaped/src/config/router/app_router.dart';
+import 'package:scaped/src/presenters/pages/state/page_state.dart';
 
 import '../../cubits/home/home_cubit.dart';
 import '../../cubits/home/home_state.dart';
@@ -15,42 +16,40 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends PageState<HomePage, HomeCubit> {
   @override
   Widget build(BuildContext context) {
-    HomeCubit cubit = Modular.get<HomeCubit>();
-
     return ScaffoldBase(
       drawer: [
         FilledButton.icon(
           icon: const Icon(Icons.add),
           label: const Text('Publicar'),
-          onPressed: () => Modular.to.popAndPushNamed(appRouter.postRoute).then((_) => cubit.refresh()),
+          onPressed: () => Modular.to.popAndPushNamed(appRouter.postRoute).then((_) => controller.refresh()),
         ),
         OutlinedButton.icon(
           icon: const Icon(Icons.article),
           label: const Text('Minhas publicações'),
-          onPressed: () => Modular.to.popAndPushNamed(appRouter.myPostsRoute).then((_) => cubit.refresh()),
+          onPressed: () => Modular.to.popAndPushNamed(appRouter.myPostsRoute).then((_) => controller.refresh()),
         ),
         OutlinedButton.icon(
           icon: const Icon(Icons.brightness_high),
           label: const Text('Alterar tema'),
-          onPressed: () => cubit.changeTheme(),
+          onPressed: () => controller.changeTheme(),
         ),
         OutlinedButton.icon(
           label: const Text('Sair'),
           icon: const Icon(Icons.logout),
-          onPressed: () => cubit.logOut(),
+          onPressed: () => controller.logOut(),
         ),
       ],
       body: BlocBuilder<HomeCubit, HomeState>(
-        bloc: cubit,
+        bloc: controller,
         builder: (context, state) => switch (state) {
           LoadingHomeState() => const Center(
               child: CircularProgressIndicator(),
             ),
           LoadedHomeState() => RefreshIndicator(
-              onRefresh: () => cubit.refresh(),
+              onRefresh: () => controller.refresh(),
               child: ListView.builder(
                 itemCount: state.posts.length + 1,
                 itemBuilder: (context, index) {
@@ -74,7 +73,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ErrorHomeState() => RefreshIndicator(
-              onRefresh: () => cubit.refresh(),
+              onRefresh: () => controller.refresh(),
               child: ListView(
                 children: [
                   Center(

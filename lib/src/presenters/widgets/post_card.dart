@@ -7,11 +7,15 @@ class PostCard extends StatelessWidget {
   final Post post;
   final Function()? onTap;
   final bool needTextWrap;
+  final Function()? update;
+  final Function()? delete;
 
   const PostCard({
     required this.post,
     this.onTap,
     this.needTextWrap = true,
+    this.update,
+    this.delete,
     super.key,
   });
 
@@ -42,9 +46,13 @@ class PostCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    child: Image.network(
-                      post.author.avatar,
-                      errorBuilder: (_, __, ___) => const Icon(Icons.person),
+                    child: Visibility(
+                      visible: post.author.avatar.isNotEmpty,
+                      replacement: const Icon(Icons.person),
+                      child: Image.network(
+                        post.author.avatar,
+                        errorBuilder: (_, __, ___) => const Icon(Icons.person),
+                      ),
                     ),
                   ),
                   Padding(
@@ -66,6 +74,25 @@ class PostCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               subtitle: _getText(post.issue),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: update != null,
+                  child: IconButton(
+                    onPressed: update,
+                    icon: const Icon(Icons.edit),
+                  ),
+                ),
+                Visibility(
+                  visible: delete != null,
+                  child: IconButton(
+                    onPressed: delete,
+                    icon: const Icon(Icons.delete),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

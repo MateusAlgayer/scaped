@@ -8,11 +8,23 @@ class PostCubit extends Cubit<PostState> {
   final ScreenMode _screenMode = ScreenMode.insert;
   PostCubit() : super(DefaultPostState());
 
+  Post? post;
+
   void savePost(String title, String issue) async {
-    Post post = Post.empty();
-    post.title = title;
-    post.issue = issue;
-    bool result = await Modular.get<IPostDAO>().insertPost(post);
+    bool alterado = true;
+    if (post == null) {
+      post = Post.empty();
+      alterado = false;
+    }
+    post!.title = title;
+    post!.issue = issue;
+
+    bool result;
+    if (alterado) {
+      result = await Modular.get<IPostDAO>().updatePost(post!);
+    } else {
+      result = await Modular.get<IPostDAO>().insertPost(post!);
+    }
     emit(result ? SuccessPostState(_screenMode) : ErrorPostState('Deu algum erro, não tratei', _screenMode));
   }
 }

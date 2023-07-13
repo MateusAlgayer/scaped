@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:scaped/src/domain/models/post.dart';
 import 'package:scaped/src/presenters/pages/post_details_page/post_details_page.dart';
+import 'package:scaped/src/presenters/pages/user_page/user_page.dart';
 
 import '../../../splash_page.dart';
 import '../../presenters/pages/home_page/home_page.dart';
@@ -18,6 +19,7 @@ class AppRouter {
   final String postDetailsRoute = '/postDetails';
   final String postRoute = '/post';
   final String myPostsRoute = '/myPosts';
+  final String userRoute = '/user';
 
   static const TransitionType appDefaultTransition = TransitionType.fadeIn;
   static const Duration appDefaultTransitionDuration = Duration(milliseconds: 800);
@@ -52,7 +54,12 @@ class AppRouter {
         ),
         ChildRoute(
           postRoute,
-          child: (context, args) => const PostPage(),
+          child: (context, args) => PostPage(post: args.data),
+          transition: appDefaultTransition,
+        ),
+        ChildRoute(
+          userRoute,
+          child: (context, args) => UserPage(user: args.data),
           transition: appDefaultTransition,
         ),
       ];
