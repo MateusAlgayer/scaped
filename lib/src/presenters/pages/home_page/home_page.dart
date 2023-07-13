@@ -19,37 +19,38 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends PageState<HomePage, HomeCubit> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) => ScaffoldBase(
-        drawer: [
-          Visibility(
-            visible: controller.user != null,
-            child: FilledButton.icon(
-              icon: const Icon(Icons.add),
-              label: const Text('Publicar'),
-              onPressed: () => Modular.to.popAndPushNamed(appRouter.postRoute).then((_) => controller.refresh()),
-            ),
+    return ScaffoldBase(
+      drawer: [
+        Visibility(
+          visible: controller.user != null,
+          child: FilledButton.icon(
+            icon: const Icon(Icons.add),
+            label: const Text('Publicar'),
+            onPressed: () => Modular.to.popAndPushNamed(appRouter.postRoute).then((_) => controller.refresh()),
           ),
-          Visibility(
-            visible: controller.user != null,
-            child: OutlinedButton.icon(
-              icon: const Icon(Icons.article),
-              label: const Text('Minhas publicações'),
-              onPressed: () => Modular.to.popAndPushNamed(appRouter.myPostsRoute).then((_) => controller.refresh()),
-            ),
+        ),
+        Visibility(
+          visible: controller.user != null,
+          child: OutlinedButton.icon(
+            icon: const Icon(Icons.article),
+            label: const Text('Minhas publicações'),
+            onPressed: () => Modular.to.popAndPushNamed(appRouter.myPostsRoute).then((_) => controller.refresh()),
           ),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.brightness_high),
-            label: const Text('Alterar tema'),
-            onPressed: () => controller.changeTheme(),
-          ),
-          OutlinedButton.icon(
-            label: const Text('Sair'),
-            icon: const Icon(Icons.logout),
-            onPressed: () => controller.logOut(),
-          ),
-        ],
-        body: switch (state) {
+        ),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.brightness_high),
+          label: const Text('Alterar tema'),
+          onPressed: () => controller.changeTheme(),
+        ),
+        OutlinedButton.icon(
+          label: const Text('Sair'),
+          icon: const Icon(Icons.logout),
+          onPressed: () => controller.logOut(),
+        ),
+      ],
+      body: BlocBuilder<HomeCubit, HomeState>(
+        bloc: controller,
+        builder: (context, state) => switch (state) {
           LoadingHomeState() => const Center(
               child: CircularProgressIndicator(),
             ),
