@@ -1,14 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:scaped/src/domain/repositories/i_post_dao.dart';
+import 'package:scaped/src/domain/repositories/i_user_dao.dart';
 
 import '../../../config/router/app_router.dart';
 import '../../../config/themes/app_theme.dart';
 import '../../../domain/models/post.dart';
+import '../../../domain/models/user.dart';
 import '../../../domain/repositories/i_auth.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
+  User? user;
   HomeCubit() : super(const LoadingHomeState()) {
     _getPosts();
   }
@@ -28,6 +31,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> _getPosts() async {
     try {
       emit(const LoadingHomeState());
+      user = (await Modular.get<IUserDAO>().getUsers()).firstOrNull;
       List<Post> list = await Modular.get<IPostDAO>().getPosts();
       emit(LoadedHomeState(posts: list));
     } catch (e) {
