@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:scaped/src/presenters/cubits/post/post_state.dart';
 import 'package:scaped/src/presenters/cubits/user/user_cubit.dart';
 import 'package:scaped/src/presenters/cubits/user/user_state.dart';
 import 'package:scaped/src/presenters/widgets/scaffold_base.dart';
@@ -58,7 +57,7 @@ class _UserPageState extends PageState<UserPage, UserCubit> {
       body: BlocConsumer<UserCubit, UserState>(
         bloc: controller,
         listener: (context, state) async {
-          if (state is SuccessPostState) {
+          if (state is SuccessUserState) {
             showDialog(
               context: context,
               barrierDismissible: false,
